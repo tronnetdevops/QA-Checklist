@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="qaChecklistApp">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<title>QA Checklist</title>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/normalize.min.css"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.1.1/foundation.min.css"/>
+		
+		
+		<link href='https://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/vendor/modernizr.js"></script>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+		
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<style>
+
+			header{
+				margin-bottom: 2em;
+			}
+			
+			table{
+				width: 100%;
+			}
+			
+			a, a.accordion-title, .tabs-title a{
+				color: #005555;
+			}
+			
+			a:hover{
+				color: #006666;
+			}
+			
+			#offCanvasLeft{
+				background: #125358;
+				color: #FFFFFF;
+			}
+			
+			.off-canvas-content{
+				background: #E9E9E9;
+				overflow: scroll;
+			}
+			
+			hr.alt{
+				border-color: #006666;
+			    border-top: 1px solid #004444;
+			}
+
+			button.button.hollow{
+				color: #005555;
+				border-color: #005555;
+			}
+			
+			button.button{
+				color: #005555;
+				background: #008584;
+			}
+			
+			.qac-sidemenu-header{
+				margin-top: .5em;
+				background: #125358;
+			}
+			
+			.qac-main-menu-icon{
+				color: #005555;
+				margin: .4em 1em;
+				cursor: pointer;
+			}
+			
+			.title-bar{
+/*				background: #FFF;*/
+			}
+
+			.title-bar ul{
+				background: none;
+				border: none;
+			}
+			
+			.title-bar li{
+				background: none;
+				border: none;
+			}
+			
+			.title-bar li .submenu{
+				border: 1px solid #005555 !important;
+			}
+			
+			.title-bar li .submenu li{
+				background: #125358;
+/*				border-bottom: 1px solid #006666;*/
+/*			    border-top: 1px solid #004444;*/
+			}
+			
+			.title-bar li .submenu li a{
+				color: #FFFFFF;
+				font-size: .8rem;
+				padding: 1em !important;
+			}
+			
+			.title-bar li .submenu li a:hover{
+				color: #CCCCCC;
+			}
+
+			.title-bar li a{
+				background: none;
+				border: none;
+				padding: .5em 1em !important;
+				color: #005555;
+				font-size: .9rem;
+				font-weight: 500;
+/*				text-transform: uppercase;*/
+				border-right: 1px solid #333;
+			}
+			
+			.title-bar .title-bar-right li a{
+				border-right: none;
+			    padding-right: 1.5rem !important;
+			}
+			
+			.title-bar .dropdown.menu .is-dropdown-submenu-parent.is-down-arrow>a::after{
+				top: .7em;
+				border-color: #006666 transparent transparent;
+			}
+			
+			.title-bar li a:hover{
+				color: #006666;
+				background: none;
+			}
+			
+			.title-bar li a[aria-selected=true]{
+				color: #008584;
+				background: none;
+			}
+			
+
+			
+			.qac-sidemenu-close--button{
+				font-weight: 200;
+				cursor: pointer;
+			}
+			
+			.qac-generated-report{
+				font-family: 'Libre Baskerville', serif;
+			}
+			
+			h1,h2,h3,h4,h5,h6{
+				font-family: 'Alegreya', serif;
+			}
+			
+			.qac-header-control-button{
+				margin-bottom: 0;
+			}
+			
+			.qac-report-failed-item-container{
+				padding: .5em 1em;
+				
+			}
+			
+			
+			.qac-report-mode{
+				background: #FFFFFF;
+			}
+			
+			.qac-total-stat{
+				margin-bottom: 0;
+				border-radius: 5px;
+			}
+			
+			.qac-screens-listing-heading{
+				background: #006666;
+			    border-top-right-radius: 5px;
+			    border-top-left-radius: 5px;
+				border: 1px solid #e6e6e6;
+			    padding: .5em 1.3em .1em 1.2em;
+			}
+			
+			.qac-checklist-tab-content{
+/*				background: #3E5C5F;*/
+				border-radius: 5px;
+			}
+			
+			.qac-screens-listing-heading h5{
+			    letter-spacing: 1px;
+				color: #002D31;
+			}
+			
+			.qac-screen-component-header{
+/*				background: #3E3E3E;*/
+			    font-size: .75rem;
+			}
+			
+			.qac-screen-component-key{
+			    padding: .5em;
+			    border-radius: 3px;
+			    margin: 0 .2em .2em .2em;
+			}
+			
+			.qac-screen-object-data-header{
+				border: 1px solid #e6e6e6
+			}
+			
+			.qac-screen-object-data-header a{
+			    font-size: .75rem;
+			}
+			
+			.qac-screen-component-item{
+/*				background: #6E6E6E;*/
+				
+			}
+			
+			.qac-screen-object-data-header{
+/*				background: #6E6E6E;*/
+			}
+			
+			.accordion-title.qac-screen-group-header{
+/*				background: black;*/
+/*				border: none;*/
+/*				border-bottom-width: 1px;*/
+			}
+			
+			.qac-checklist-screens-container,#qac-checklist-container{
+/*				padding: 0;*/
+			}
+			
+			.qac-checklist-screen-testcases-container{
+				padding: 0;
+/*				border-bottom: none;*/
+			}
+			
+			.qac-checklist-groups-list{
+/*				border: none;*/
+			}
+			
+			.tabs-panel .qac-top-tab-panel-header{
+			    margin: -1.1rem !important;
+			    background: #008584;
+			    border-top-right-radius: 5px;
+			    border-top-left-radius: 5px;
+			    padding-top: .5em;
+				color: #002D31;
+				margin-bottom: 1em !important;
+			}
+			
+			.qac-top-tab-panel-header button{
+				margin-bottom: 0;
+			}
+			
+			.qac-container--base,.button-group{
+				margin-bottom: 0;
+				border-top: none;
+				border-right: none;
+				border-left: none;
+			}
+			
+			.qac-container--base{
+				border-bottom: none;
+			}
+			
+			.select2-selection.select2-selection--single{
+				height: 2.5em;
+			}
+			
+			.select2.select2-container.select2-container--default.select2-container--below{
+				margin-bottom: 1.5em;
+			}
+			
+			@media print
+			{    
+			    .no-print, .no-print *
+			    {
+			        display: none !important;
+			    }
+				
+				#myChart{
+					height: 200px;
+					width: 200px;
+				}
+			}
+		</style>
+		
+		<script>
+			
+			var QACApp = angular.module("qaChecklistApp", ["datatables"]);
+			
+			QACApp.value("mode", "collection");
+
+			QACApp.value("appData", {
+		        "screenGroups":{  
+		            "example-group":{  
+		                "id":"example-group",
+		                "label":"Example Screen Group",
+						"type":"group"
+		            }
+				},
+		        "screens":{  
+		            "example-screen":{  
+		                "id":"example-screen",
+		                "type":"screen",
+		                "level":0,
+		                "label":"Example Screen",
+		                "group":"example-group"
+		            }
+				},
+		        "objects":{  
+		            "example-object":{  
+		                "id":"example-object",
+		                "label":"Example Object",
+		                "properties":{  
+		                    "example-property":{  
+		                        "id":"example-property",
+		                        "label":"Example Property",
+		                        "key":"exampleProperty",
+		                        "type":"input-search",
+		                        "placeholder":"example placeholder",
+		                        "validations":[  
+		                            "required"
+		                        ],
+		                        "group":false,
+		                        "displayed":true,
+		                        "editable":true,
+		                        "screens":[  
+		                            "example-screen"
+		                        ]
+		                    }
+		                }
+		            }
+		        },
+		        "components":{  
+		            "example-component":{  
+		                "id":"example-component",
+		                "label":"Example Component",
+		                "screens":{  
+		                    "example-screen":{  
+		                        "state":"example-state"
+		                    }
+						}
+					}
+				},
+		        "cases":{
+		            "example-testCase-1": {  
+						"id": "example-testCase-1",
+		                "type":"check",
+		                "group":"Example Test Case Group",
+		                "question":"Example Test Case Question...",
+		                "screens":[  
+		                    "example-screen"
+		                ]
+		            },
+		            "example-testCase-2": {  
+						"id": "example-testCase-2",
+		                "type":"check",
+		                "group":"Example Test Case For Component",
+		                "question":"Example Test Case Component Question...",
+		                "components":{
+		                    "example-component":["example-state"]
+		                }
+		            }
+				}
+			});
+			
+			QACApp.value("qaObjects", {});
+			QACApp.value("qaObjectProperties", {});
+			QACApp.value("qaObjectPropertyTypes", {
+				"input-search": {
+					"id": "input-search",
+					"label": "Input Search"
+				}
+			});
+			QACApp.value("screens", {});
+			QACApp.value("screenGroups", {});
+			QACApp.value("testCases", []);
+			QACApp.value("testCaseComponents", {});
+			
+				  
+			QACApp.filter("cleanid", function() {
+				return function(input) {
+					return input && input.toLowerCase().replace(/\s+/gim,'-').replace(/[^\w-]/gim,'') || input;
+				}
+			});
+			
+			QACApp.factory("TrelloManager", ["$rootScope", "TestCaseResultsManager", function TrelloManagerFactory($rootScope, TestCaseResultsManager) {
+				var _manager = {};
+				
+				return _.extendOwn( _manager, {
+					"boards": {},
+					
+					"getBoards": function(){
+						return Trello.get("/member/me/boards", function(data){
+							
+							_.each(data, function(boardData){
+								_manager.addBoard(boardData);
+							});
+							
+							$rootScope.$broadcast("trello.boards.loaded", _manager);
+						});
+					},
+					"addBoard": function(board){
+						var newBoard = {
+							"name": board.name,
+							"id": board.id,
+							"lists": {}
+						};
+						
+						_manager.boards[ newBoard.id ] = newBoard;
+						
+						_manager.getBoardLists(newBoard);
+						
+						return newBoard;
+					},
+					"getBoardLists": function(board){
+						return Trello.get("/boards/"+board.id+"/lists", function(data){
+							
+							_.each(data, function(listData){
+								_manager.addBoardList(listData);
+							});
+							
+							$rootScope.$broadcast("trello.boards.lists.loaded", _manager);
+						});
+					},
+					"addBoardList": function(list){
+						var newList = {
+							"name": list.name,
+							"id": list.id,
+							"board": list.idBoard
+						};
+						
+						_manager.boards[ newList.board ].lists[ newList.id ] = newList;
+						
+						return newList;
+					},
+					"authorize": function(){
+						Trello.authorize({
+							"type": "popup",
+							"name": "QA Checklist",
+							"scope": {
+							    "read": true,
+							    "write": true
+							},
+							"expiration": "never",
+							"success": function(data){
+								
+								_manager.getBoards();
+								
+								$rootScope.$broadcast("trello.authorized", _manager);
+							}
+						});
+					},
+					
+					"createTrelloResultsChecklist": function(list){
+						return Trello.post("/cards", {
+							"idList": list.id,
+							"name": "QA Checklist Results",
+							"desc": "Parsed results from today."
+						}, function(card){
+							_manager.resultCard = card;
+							
+							Trello.post("/checklists", {
+								"idCard": card.id,
+								"name": "Failed"
+							}, function(checklist){
+								_manager.resultChecklist = checklist;
+
+								_.each(TestCaseResultsManager.failing, function(tcResult){
+									var clName = "["+tcResult.screen.group+" - "+tcResult.screen.label+"] - ";
+									
+									if (tcResult.testCase.group){
+										clName += tcResult.testCase.group+" -  ";
+									}
+									
+									if (tcResult.testCase.components){
+										clName += "{"+_.keys(tcResult.testCase.components).join(",")+"} ";
+									}
+									
+									clName += tcResult.testCase.question;
+									
+									if (tcResult.testCase.comments){
+										clName += " :: ("+tcResult.comments+")";
+									}
+									
+									Trello.post("/checklists/"+checklist.id+"/checkItems", {
+		   								"name": clName
+		   							});
+									
+									$("#qac-publish-modal").foundation("close");
+									$("#qac-publish-success-modal").foundation("open");
+								});
+							});
+						});
+					}
+				});
+			}]);
+
+			QACApp.factory("TestCaseResultsManager", function TestCaseResultsManagerFactory() {
+				return {
+					"results": [],
+					"passing": [],
+					"failing": [],
+					"empty": [],
+					"totalPass": function(){
+						this.passing = this.results.filter(function(testCaseResult){ return testCaseResult.result == "pass"; });
+						return this.passing.length;
+					},
+					"totalFail": function(){
+						this.failing = this.results.filter(function(testCaseResult){ return testCaseResult.result == "fail"; });
+						return this.failing.length
+					},
+					"totalEmpty": function(){
+						this.empty = this.results.filter(function(testCaseResult){ return !testCaseResult.result; });
+						return this.empty.length
+					}
+				};
+			});
+			
+			QACApp.factory("TestCaseResult", function TestCaseResultFactory() {
+			
+				function TestCaseResult(data) {
+					this.result = null;
+					this.comments = "";
+					
+					_.extendOwn( this, data );
+				}
+				
+				return TestCaseResult;
+			});
+			
+			QACApp.factory("QAObjectProperty", function QAObjectPropertyFactory() {
+				var _oprops = {
+					"id": null,
+					"label": null,
+					"key": null,
+					"type": null,
+					"placeholder": null,
+					"validations": [],
+					"group": null,
+					"displayed": null,
+					"editable": null,
+					"screens": []
+				};
+				
+				function QAObjectProperty(data) {
+					_.extendOwn( this, _oprops, data );
+				}
+				
+				return QAObjectProperty;
+			});
+			
+			QACApp.factory("QAObject", ["QAObjectProperty", "qaObjectProperties", "screens", function QAObjectFactory(QAObjectProperty, qaObjectProperties, screens) {
+				var _oprops = {
+					"id": null,
+					"type": null,
+					"level": 0,
+					"label": null,
+					"group": null
+				};
+				
+				function QAObject(data) {
+					var _this = this;
+					var objectProperties = {};
+					
+					_.extendOwn( this, _oprops, data );
+					
+					_.each( this.properties, function(propertyData, propertyDataKey){
+						var newQAObjectProperty = new QAObjectProperty(propertyData);
+						
+						newQAObjectProperty.uid = _this.id+'-'+newQAObjectProperty.id;
+						
+						objectProperties[propertyDataKey] = newQAObjectProperty;
+						
+						qaObjectProperties[ newQAObjectProperty.uid ] = newQAObjectProperty;
+					});
+					
+					this.properties = objectProperties;
+				}
+				
+				
+				QAObject.prototype.updateScreenPropertyMapping = function(){
+					var _this = this;
+					
+					_.each( _this.properties, function(QAObjectProperty){
+						_.each( QAObjectProperty.screens, function(checklistScreenID) {
+							var checklistScreen = screens[checklistScreenID];
+						
+							if ( !("objects" in checklistScreen) ){
+								checklistScreen.objects = {};
+							}
+						
+							if ( !(_this.id in checklistScreen.objects) ){
+								checklistScreen.objects[ _this.id ] = {
+									"id": _this.id,
+									"label": _this.label,
+									"properties": {}
+								};
+							}
+						
+							checklistScreen.objects[ _this.id ].properties[ QAObjectProperty.uid ] = QAObjectProperty;
+						});
+					});
+					
+				};
+				
+				return QAObject;
+			}]);
+
+			
+			QACApp.factory("TestCase", function TestCaseFactory() {
+				var _oprops = {
+					"type": null,
+					"group": null,
+					"question": null,
+					"screens": []
+				};
+				
+				function TestCase(data) {
+					_.extendOwn( this, _oprops, data );
+				}
+				
+				return TestCase;
+			});
+			
+			QACApp.factory("TestCaseComponent", ["testCases", function TestCaseComponentFactory(testCases) {
+				var _oprops = {
+					"id": null,
+					"label": null,
+					"screens": {}
+				};
+				
+				function TestCaseComponent(data) {
+					_.extendOwn( this, _oprops, data );
+				}
+				
+				TestCaseComponent.prototype.getTestCases = function(checklistScreen){
+					var _this = this;
+					
+					var filteredTestCases = testCases.filter(function(testCase){
+						return testCase.components && _this.id in testCase.components && testCase.components[ _this.id ].indexOf( _this.screens[ checklistScreen.id ].state ) !== -1;
+					});
+					
+					return filteredTestCases;
+				}
+				
+				return TestCaseComponent;
+			}]);
+			
+			QACApp.factory("ChecklistScreen", ["testCases", "testCaseComponents", function ChecklistScreenFactory(testCases, testCaseComponents) {
+				var types = ["screen"];
+
+				function ChecklistScreen(data) {
+					_.extendOwn( this, {
+						"id": null,
+						"type": null,
+						"level": 0,
+						"label": null,
+						"group": null
+					}, data );
+					
+					this.results = {};
+					
+				}
+				
+				
+			    ChecklistScreen.types = angular.copy(types);
+				
+				ChecklistScreen.prototype.groups = [];
+				
+				ChecklistScreen.prototype.getTestCases = function(){
+					var id = this.id;
+					
+					var filteredTestCases = testCases.filter(function(testCase){ 
+						return testCase.screens && testCase.screens.indexOf( id ) !== -1;
+					});
+					
+					return filteredTestCases;
+				}
+				
+				ChecklistScreen.prototype.getTestCaseComponents = function(){
+					var id = this.id;
+					
+					var filteredTestCaseComponents = {};
+					_.each( testCaseComponents, function (testCaseComponent) {
+						if (testCaseComponent.screens[ id ]){
+							filteredTestCaseComponents[ testCaseComponent.id ] = testCaseComponent;
+						}
+					});
+					
+					return filteredTestCaseComponents;
+				}
+				
+				ChecklistScreen.prototype.setupTestCaseGroups = function(){
+					var _this = this;
+					var testCaseGroups = {};
+					var testCasesByGroup = [];
+				
+					var filteredTestCases = this.getTestCases();
+					_.each( filteredTestCases, function (testCase) {
+						if ( !(testCase.group in testCaseGroups) ){
+							var groupID = testCase.group.toLowerCase().replace(/\s+/gim,'-').replace(/[^\w-]/gim,'');
+							testCaseGroups[ testCase.group ] = {
+								"label": testCase.group,
+								"id": groupID,
+								"testCases": [],
+								"components": {}
+							};
+						}
+						
+						testCaseGroups[ testCase.group ].testCases.push( testCase );
+					});
+					
+					
+					var filteredTestCaseComponents = this.getTestCaseComponents();
+					_.each( filteredTestCaseComponents, function (testCaseComponent) {
+						var filteredTestComponentTestCases = testCaseComponent.getTestCases( _this );
+						
+						_.each( filteredTestComponentTestCases, function (testCase) {
+							if ( !(testCase.group in testCaseGroups) ){
+								var groupID = testCase.group.toLowerCase().replace(/\s+/gim,'-').replace(/[^\w-]/gim,'');
+								testCaseGroups[ testCase.group ] = {
+									"label": testCase.group,
+									"id": groupID,
+									"testCases": [],
+									"components": {}
+								};
+							}
+							
+							if ( !(testCaseComponent.id in testCaseGroups[ testCase.group ].components ) ){
+								testCaseGroups[ testCase.group ].components[ testCaseComponent.id ] = {
+									"label": testCaseComponent.label,
+									"id": testCaseComponent.id,
+									"testCases": []
+								};
+							}
+						
+							testCaseGroups[ testCase.group ].components[ testCaseComponent.id ].testCases.push( testCase );
+						});
+					});
+					
+					_this.groups = testCaseGroups;
+				}
+				
+				return ChecklistScreen;
+			}]);
+			
+			
+			/**
+			 * Controllers
+			 */
+			QACApp.controller("DataLoaderController", ["$rootScope", "$scope", "appData", "ChecklistScreen", "TestCase", "TestCaseComponent", "QAObject", "screens", "screenGroups", "testCases", "testCaseComponents", "qaObjects", function DataLoaderController($rootScope, $scope, appData, ChecklistScreen, TestCase, TestCaseComponent, QAObject, screens, screenGroups, testCases, testCaseComponents, qaObjects) {
+				
+				$scope.requestURI = "ff-package.json";
+				
+				$scope.loadData = function () {					
+					var screensData = appData.screens;
+					var screenGroupsData = appData.screenGroups;
+					var testCasesData = appData.cases;
+					var testCaseComponentsData = appData.components;
+					var qaObjectsData = appData.objects;
+
+					_.each( screensData, function (screenData) {
+						var newChecklistScreen = new ChecklistScreen( screenData );
+
+						if (!screenGroups[ newChecklistScreen.group ]){
+							screenGroups[ newChecklistScreen.group ] = _.extend({
+								"screens": {}
+							}, screenGroupsData[ newChecklistScreen.group ]);
+						}
+
+						screenGroups[ newChecklistScreen.group ].screens[ newChecklistScreen.id ] = screens[ newChecklistScreen.id ] = newChecklistScreen;
+					});
+
+					_.each( testCasesData, function (testCaseData) {
+						var newTestCase = new TestCase( testCaseData );
+
+						testCases.push( newTestCase );
+					});
+
+					_.each( testCaseComponentsData, function (testCaseComponentData) {
+						var newTestCaseComponent = new TestCaseComponent( testCaseComponentData );
+
+						testCaseComponents[ newTestCaseComponent.id ] = newTestCaseComponent;
+					});
+
+					_.each( qaObjectsData, function (qaObjectData) {
+						var newQAObject = new QAObject( qaObjectData );
+
+						newQAObject.updateScreenPropertyMapping();
+
+						qaObjects[ newQAObject.id ] = newQAObject;
+					});
+					
+					$rootScope.$broadcast("app.data.update", appData);
+				}
+				
+				$scope.makeDataRequest = function () {
+					$.get( $scope.requestURI ).done( function (data) {
+						_.extendOwn(appData, data.data);
+						
+						$scope.loadData();
+					});
+				};
+
+			}]);
+			
+			QACApp.controller("ScreenListController", ["$scope", "screenGroups", function ScreenListController($scope, screenGroups) {
+				
+				$scope.groups = screenGroups;
+				
+				$scope.$on("app.data.update", function(e, appData){
+					$scope.$apply();
+				});
+			}]);
+			
+			
+			
+			QACApp.controller("TestCaseController", ["$scope", "TestCaseResult", "TestCaseResultsManager", function TestCaseController($scope, TestCaseResult, TestCaseResultsManager) {
+
+				$scope.testCaseResult = new TestCaseResult({
+					"testCase": $scope.testCase,
+					"screen": $scope.screen,
+					"result": null
+				});
+				
+				$scope.commenting = false;
+				
+				TestCaseResultsManager.results.push( $scope.testCaseResult );
+				
+				$scope.setResultPass = function(){
+					$scope.testCaseResult.result = "pass";
+				}
+
+				$scope.setResultFail = function(){
+					$scope.testCaseResult.result = "fail";
+				}
+				
+				$scope.toggleComments = function(){
+					$scope.commenting = !$scope.commenting;
+				}
+				
+				$scope.$on("app.data.update", function(e, appData){
+					$scope.$apply();
+				});
+			}]);
+			
+			QACApp.controller("ReportResultsController", ["$scope", "TestCaseResultsManager", function ReportResultsController($scope, TestCaseResultsManager) {
+				
+				$scope.totals = TestCaseResultsManager;
+				
+				$scope.$on("app.data.update", function(e, appData){
+					$scope.$apply();
+				});
+			}]);
+ 			   
+			   
+			QACApp.controller("ModeController", ["$rootScope", "$scope", "mode", "TestCaseResultsManager", "TrelloManager", function ModeController($rootScope, $scope, mode, TestCaseResultsManager, TrelloManager) {
+				
+				$scope.mode = mode;
+				
+				$scope.$on("mode", function(e, newMode){
+					$scope.mode = newMode;
+				})
+				
+				$scope.generateReport = function(){
+					$rootScope.$broadcast("mode", "reporting");
+					
+					var chartData = [
+					    {
+					        "value": TestCaseResultsManager.totalFail(),
+					        "color":"#F7464A",
+					        "highlight": "#FF5A5E",
+					        "label": "Fail"
+					    },
+					    {
+					        "value": TestCaseResultsManager.totalPass(),
+					        "color": "#46BFBD",
+					        "highlight": "#5AD3D1",
+					        "label": "Pass"
+					    },
+					    {
+					        "value": TestCaseResultsManager.totalEmpty(),
+					        "color": "#FDB45C",
+					        "highlight": "#FFC870",
+					        "label": "N/A"
+					    }
+					];
+					
+					setTimeout(function(chartData){
+						var newChart = new Chart( $("#myChart").get(0).getContext("2d") ).Doughnut(chartData, {
+						    "legendTemplate": "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+						});
+					}, 200, chartData)
+					
+					
+				}
+				
+				$scope.startCollection = function(){
+					$rootScope.$broadcast("mode", "collection");
+				}
+				
+				/**
+				 * @todo Move this to at Trello Controller
+				 */
+				$scope.publishReport = function(){
+					TrelloManager.authorize();
+				}
+			}]);
+			
+			QACApp.controller("ReportController", ["$scope", "TestCaseResultsManager", function ReportController($scope, TestCaseResultsManager) {
+				$scope.postedDate = new Date();
+				$scope.results = TestCaseResultsManager;
+				
+				$scope.$on("app.data.update", function(e, appData){
+					$scope.$apply();
+				});
+			}]);
+
+
+			QACApp.controller("PublishController", ["$scope", "$timeout", "TrelloManager", function PublishController($scope, $timeout, TrelloManager) {
+				
+				$scope.boards = TrelloManager.boards;
+				
+				$scope.selectList = function(list){
+					TrelloManager.createTrelloResultsChecklist(list);
+				}
+				
+				$scope.initializeDrillDown = function(){
+					$timeout(function(){
+						var elem = new Foundation.Drilldown( $("#qac-board-listing") );
+						
+					});
+				}
+				
+				$scope.$on("trello.authorized", function(e, data){
+					$("#qac-publish-modal").foundation("open");
+				});
+				
+				$scope.$on("trello.boards.lists.loaded", function(e, data){
+					$scope.$apply();
+					
+					$("#qac-board-listing").foundation();
+				});
+			}]);
+			
+			
+			
+			/**
+			 * Test Case Management
+			 */
+			QACApp.factory("testCaseToEdit", ["$rootScope", function testCaseToEditFactory($rootScope) {
+				var opts = {
+					"selected": null,
+					"selectedID": null
+				};
+				
+				$rootScope.$on("testCase.update.load", function(e, selectedTestCase){
+					opts.selected = selectedTestCase;
+					opts.selectedID = selectedTestCase.id;
+				});
+				
+				return opts;
+			}]);
+			
+			
+			QACApp.controller("TestCasesTabContainerController", ["$rootScope", "$scope", "testCases", "testCaseToEdit", "TestCase", function TestCasesTabContainerController($rootScope, $scope, testCases, testCaseToEdit, TestCase) {
+				$scope.testCasesList = testCases;
+				
+				$scope.setTestCaseToEdit = function(selectedTestCase){
+					if (!selectedTestCase){
+						selectedTestCase = new TestCase();
+					}
+					
+					$rootScope.$broadcast("testCase.update.load", selectedTestCase);
+				}
+				
+			}]);
+			
+			QACApp.controller("TestCaseEditController", ["$rootScope", "$scope", "$filter", "testCaseToEdit", "testCases", function TestCaseEditController($rootScope, $scope, $filter, testCaseToEdit, testCases) {
+				$scope.testCase = testCaseToEdit;
+				
+				$scope.$watch("testCase.selected.label", function(newValue, oldValue){
+					if (testCaseToEdit.selected){
+						if (!testCaseToEdit.selected.id){
+							testCaseToEdit.selectedID = $filter("cleanid")(newValue);
+						}
+					}
+				});
+				
+				$scope.updateFromEdits = function(){
+					/**
+					 * New testCases won't have an ID, so we process them externally within 
+					 * the "testCaseToEdit" object.
+					 */
+					if ( !testCaseToEdit.selected.id){
+						if (testCaseToEdit.selectedID) {
+							if ( !(testCaseToEdit.selectedID in testCases) ){
+								testCaseToEdit.selected.id = testCaseToEdit.selectedID;
+								testCases[ testCaseToEdit.selected.id ] = testCaseToEdit.selected;
+							} else {
+								throw " ID already exists";
+							}
+						} else {
+							throw " must have an ID set";
+						}
+					}
+				}
+			}]);
+			
+			
+			/**
+			 * Screen Management
+			 */
+			
+			QACApp.factory("screenToEdit", ["$rootScope", "$filter", "screenGroups", function screenToEditFactory($rootScope, $filter, screenGroups) {
+				var opts = {
+					"selected": null,
+					"selectedGroup": null,
+					"selectedID": null
+				};
+				
+				$rootScope.$on("screen.update.load", function(e, selectedScreen){
+					opts.selected = selectedScreen;
+					opts.selectedGroup = screenGroups[ selectedScreen.group ];
+					opts.selectedID = selectedScreen.id;
+					
+					var selectData = _.map( screenGroups, function(screenGroup){
+						return {
+							"text": screenGroup.label,
+							"id": screenGroup.id
+						};
+					});
+					
+					$("#qac-screen-management-group").select2({
+						"placeholder": "Create new group or select one below",
+						"allowClear": true,
+						"tags": true,
+						"data": selectData || null
+					}).on("change", function(e){
+						var newId = $filter("cleanid")( $(this).val() );
+						
+						if (newId == opts.selected.group){
+							return;
+						}
+						
+						var oldScreenGroup = screenGroups[ opts.selected.group ];
+						var newScreenGroup = screenGroups[ newId ];
+
+						if (oldScreenGroup){
+							delete oldScreenGroup.screens[ opts.selected.id ];
+						}
+						
+						if (!newScreenGroup){
+							newScreenGroup = screenGroups[ newId ] = {
+								"screens": {},
+								"id": newId,
+								"label": $(this).find("option:selected").text()
+							}
+						}
+
+						newScreenGroup.screens[ opts.selected.id ] = opts.selected;
+
+						opts.selected.group = newId;
+					});
+				});
+				
+				return opts;
+			}]);
+			
+			QACApp.controller("ScreensTabContainerController", ["$rootScope", "$scope", "screens", "screenGroups", "screenToEdit", "ChecklistScreen", function ScreensTabContainerController($rootScope, $scope, screens, screenGroups, screenToEdit, ChecklistScreen) {
+				$scope.screensList = screens;
+				$scope.screenGroups = screenGroups;
+				
+				$scope.setScreenToEdit = function(selectedScreen){
+					if (!selectedScreen){
+						selectedScreen = new ChecklistScreen();
+					}
+					
+					$rootScope.$broadcast("screen.update.load", selectedScreen);
+					
+				}
+				
+			}]);
+			
+			QACApp.controller("ScreenEditController", ["$rootScope", "$filter", "$scope", "screens", "screenToEdit", "screenGroups", function ScreenEditController($rootScope, $filter, $scope, screens, screenToEdit, screenGroups) {
+				$scope.screen = screenToEdit;
+				
+				$scope.allGroups = screenGroups;
+				
+				$scope.$watch("screen.selected.label", function(newValue, oldValue){
+					if (screenToEdit.selected){
+						if (!screenToEdit.selected.id){
+							screenToEdit.selectedID = $filter("cleanid")(newValue);
+						}
+					}
+					
+				});
+				
+				$scope.updateScreenFromEdits = function(){
+					
+					/**
+					 * New screens won't have an ID, so we process them externally within 
+					 * the "screenToEdit" object.
+					 */
+					if ( !screenToEdit.selected.id){
+						if (screenToEdit.selectedID) {
+							if ( !(screenToEdit.selectedID in screens) ){
+								screenToEdit.selected.id = screenToEdit.selectedID;
+								screens[ screenToEdit.selected.id ] = screenToEdit.selected;
+							} else {
+								throw "Screen ID already exists";
+							}
+						} else {
+							throw "Screen must have an ID set";
+						}
+					}
+				};
+			}]);
+			
+			
+			
+			
+			/**
+			 * Component Management
+			 */
+			QACApp.factory("componentToEdit", ["$rootScope", "testCases", function componentToEditFactory($rootScope, testCases) {
+				var opts = {
+					"selected": null,
+					"selectedID": null
+				};
+				
+				$rootScope.$on("component.update.load", function(e, selectedTestCaseComponent){
+					opts.selected = selectedTestCaseComponent;
+					opts.selectedID = selectedTestCaseComponent.id;
+				});
+				
+				return opts;
+			}]);
+			
+			
+			QACApp.controller("ComponentsTabContainerController", ["$rootScope", "$scope", "testCaseComponents", "componentToEdit", "TestCaseComponent", function ComponentsTabContainerController($rootScope, $scope, testCaseComponents, componentToEdit, TestCaseComponent) {
+				$scope.componentsList = testCaseComponents;
+				
+				$scope.setComponentToEdit = function(selectedTestCaseComponent){
+					if (!selectedTestCaseComponent){
+						selectedTestCaseComponent = new TestCaseComponent();
+					}
+					
+					$rootScope.$broadcast("component.update.load", selectedTestCaseComponent);
+				}
+				
+			}]);
+			
+			QACApp.controller("ComponentEditController", ["$rootScope", "$scope", "$filter", "componentToEdit", "testCaseComponents", function ComponentEditController($rootScope, $scope, $filter, componentToEdit, testCaseComponents) {
+				$scope.component = componentToEdit;
+				
+				$scope.$watch("component.selected.label", function(newValue, oldValue){
+					if (componentToEdit.selected){
+						if (!componentToEdit.selected.id){
+							componentToEdit.selectedID = $filter("cleanid")(newValue);
+						}
+					}
+				});
+				
+				$scope.updateComponentFromEdits = function(){
+					/**
+					 * New components won't have an ID, so we process them externally within 
+					 * the "componentToEdit" object.
+					 */
+					if ( !componentToEdit.selected.id){
+						if (componentToEdit.selectedID) {
+							if ( !(componentToEdit.selectedID in testCaseComponents) ){
+								componentToEdit.selected.id = componentToEdit.selectedID;
+								testCaseComponents[ componentToEdit.selected.id ] = componentToEdit.selected;
+							} else {
+								throw "Component ID already exists";
+							}
+						} else {
+							throw "Component must have an ID set";
+						}
+					}
+				}
+			}]);
+			
+			
+			
+			/**
+			 * QAObject Management
+			 */
+			QACApp.factory("qaObjectToEdit", ["$rootScope", "qaObjectProperties", "QAObject", function qaObjectToEditFactory($rootScope, testCases, QAObject) {
+				var opts = {
+					"selected": null,
+					"selectedID": null
+				};
+				
+				$rootScope.$on("qaobject.update.load", function(e, selectedQAObject){
+					opts.selected = selectedQAObject;
+					opts.selectedID = selectedQAObject.id;
+				});
+				
+				return opts;
+			}]);
+			
+			
+			QACApp.controller("qaObjectsTabContainerController", ["$rootScope", "$scope", "qaObjects", "qaObjectToEdit", "QAObject", function qaObjectsTabContainerController($rootScope, $scope, qaObjects, qaObjectToEdit, QAObject) {
+				$scope.qaobjectsList = qaObjects;
+				
+				$scope.setQAObjectToEdit = function(selectedQAObject){
+					if (!selectedQAObject){
+						selectedQAObject = new QAObject();
+					}
+					
+					$rootScope.$broadcast("qaobject.update.load", selectedQAObject);
+				}
+				
+			}]);
+			
+			QACApp.controller("QAObjectEditController", ["$rootScope", "$scope", "$filter", "qaObjectToEdit", "qaObjects", "QAObjectProperty", function QAObjectEditController($rootScope, $scope, $filter, qaObjectToEdit, qaObjects, QAObjectProperty) {
+				$scope.qaobject = qaObjectToEdit;
+				
+				$scope.$watch("qaobject.selected.label", function(newValue, oldValue){
+					if (qaObjectToEdit.selected){
+						if (!qaObjectToEdit.selected.id){
+							qaObjectToEdit.selectedID = $filter("cleanid")(newValue);
+						}
+					}
+				});
+				
+				$scope.updateQAObjectFromEdits = function(){
+					/**
+					 * New QA Objects won't have an ID, so we process them externally within 
+					 * the "qaObjectToEdit" object.
+					 */
+					if ( !qaObjectToEdit.selected.id){
+						if (qaObjectToEdit.selectedID) {
+							if ( !(qaObjectToEdit.selectedID in qaObjects) ){
+								qaObjectToEdit.selected.id = qaObjectToEdit.selectedID;
+								qaObjects[ qaObjectToEdit.selected.id ] = qaObjectToEdit.selected;
+							} else {
+								throw "QA Object ID already exists";
+							}
+						} else {
+							throw "QA Object must have an ID set";
+						}
+					}
+				}
+				
+				$scope.setQAObjectPropertyToEdit = function(selectedQAObjectProperty){
+					if (!selectedQAObjectProperty){
+						selectedQAObjectProperty = new QAObjectProperty();
+					}
+					
+					$rootScope.$broadcast("qaobjectProperty.update.load", selectedQAObjectProperty, qaObjectToEdit.selected);
+				}
+			}]);
+			
+			
+			
+			/**
+			 * QAObjectProperty Management
+			 */
+			QACApp.factory("qaObjectPropertyToEdit", ["$rootScope", "qaObjectProperties", "qaObjectPropertyTypes", function qaObjectPropertyToEditFactory($rootScope, qaObjectProperties, qaObjectPropertyTypes) {
+				var opts = {
+					"selected": null,
+					"selectedType": null,
+					"selectedID": null,
+					"selectedObject": null
+				};
+				
+				$rootScope.$on("qaobjectProperty.update.load", function(e, selectedQAObjectProperty, selectedQAObject){
+					opts.selected = selectedQAObjectProperty;
+					opts.selectedObject = selectedQAObject;
+					opts.selectedType = qaObjectPropertyTypes[ selectedQAObjectProperty.type ];
+					opts.selectedID = selectedQAObjectProperty.key;
+				});
+				
+				return opts;
+			}]);
+			
+			QACApp.controller("QAObjectPropertyEditController", ["$rootScope", "$scope", "$filter", "qaObjectPropertyToEdit", "qaObjectPropertyTypes", "qaObjectProperties", function QAObjectPropertyEditController($rootScope, $scope, $filter, qaObjectPropertyToEdit, qaObjectPropertyTypes, qaObjectProperties) {
+				$scope.qaobjectProperty = qaObjectPropertyToEdit;
+				
+				$scope.allTypes = qaObjectPropertyTypes;
+				$scope.selectedTypeValueItem = qaObjectPropertyToEdit;
+				
+				$scope.$watch("qaobjectProperty.selected.key", function(newValue, oldValue){
+					if (qaObjectPropertyToEdit.selected){
+						if (!qaObjectPropertyToEdit.selected.id){
+							qaObjectPropertyToEdit.selectedID = $filter("cleanid")(newValue);
+						}
+					}
+				});
+				
+				$scope.updateObjectPropertyType = function(){
+					qaObjectPropertyToEdit.selected.type = qaObjectPropertyToEdit.selectedType.id;
+				}
+				
+				$scope.updateQAObjectPropertyFromEdits = function(){
+					/**
+					 * New QA Object Properties won't have an ID, so we process them externally  
+					 * within the "qaObjectPropertyToEdit" object.
+					 */
+					if ( !qaObjectPropertyToEdit.selected.id){
+						if (qaObjectPropertyToEdit.selectedID) {
+							if ( !(qaObjectPropertyToEdit.selectedID in qaObjectProperties) ){
+								qaObjectPropertyToEdit.selected.id = qaObjectPropertyToEdit.selectedID;
+								qaObjectProperties[ qaObjectPropertyToEdit.selected.id ] = qaObjectPropertyToEdit.selected;
+								
+								if ( !(qaObjectPropertyToEdit.selected.id in qaObjectPropertyToEdit.selectedObject.properties) ){
+									qaObjectPropertyToEdit.selectedObject.properties[ qaObjectPropertyToEdit.selected.id ] = qaObjectPropertyToEdit.selected;
+								} else {
+									throw "QA Object Property with that ID already exists in object";
+								}
+							} else {
+								throw "QA Object Property ID already exists";
+							}
+						} else {
+							throw "QA Object Property must have an ID set";
+						}
+					}
+				}
+			}]);
+
+		</script>
+	</head>
+	<body ng-controller="DataLoaderController" ng-init="loadData()">
+		
+		<div class="off-canvas-wrapper">
+			<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper ng-controller="ModeController">
+				<div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas ng-controller="ReportResultsController">
+					
+					<div class="row qac-sidemenu-header">
+						<div class="small-10 columns">
+							<h5><i class="fa fa-check-square-o"></i>&nbsp; QA Checklist</h5>
+						</div>
+						<div class="small-2 columns qac-sidemenu-close--button" data-toggle="offCanvasLeft">
+							<i class="fa fa-close"></i>
+						</div>
+					</div>
+					
+					<hr style="margin-top: 0;" class="alt"/>
+					
+					<div class="row">
+						<div class="small-6 columns text-center">
+							<button ng-if="mode=='collection'" type="button" class="button tiny expanded qac-header-control-button" ng-click="makeDataRequest()"><i class="fa fa-database"></i> Load Data</button>
+							<button ng-if="mode=='reporting'" type="button" class="button tiny expanded qac-header-control-button" ng-click="startCollection()"><i class="fa fa-check-square-o"></i> Checklist</button>
+						</div>
+						<div class="small-6 columns text-center">
+							<button ng-if="mode=='collection'" type="button" class="button tiny expanded qac-header-control-button" ng-click="generateReport()"><i class="fa fa-bar-chart"></i> Generate</button>
+							<button ng-if="mode=='reporting'" type="button" class="button tiny expanded qac-header-control-button" ng-click="publishReport()"><i class="fa fa-cloud-upload"></i> Publish</button>
+						</div>
+					</div>
+					
+					<hr class="alt" />
+										
+					<div class="row collapse">
+						<div class="small-12 columns text-center">
+							<span class="button tiny expanded success"><strong>Pass: {{totals.totalPass()}}</strong> <i class="fa fa-check"></i></span>
+						</div>
+					</div>
+					<div class="row collapse">
+						<div class="small-12 columns text-center">
+							<span class="button tiny expanded alert"><strong>Fail: {{totals.totalFail()}}</strong> <i class="fa fa-times"></i></span>
+						</div>
+					</div>
+					<div class="row collapse">
+						<div class="small-12 columns text-center">
+							<span class="button tiny expanded secondary"><strong>Total: {{totals.totalEmpty()}}</strong></span>
+						</div>
+					</div>
+					
+
+				
+				</div>
+				<div class="off-canvas-content" ng-class="{'qac-report-mode': mode=='reporting'}" data-off-canvas-content>
+	        	
+					<!-- Header Start -->
+					<header class="title-bar no-print">
+						<div class="title-bar-left">
+							<i class="fa fa-bars qac-main-menu-icon" data-open="offCanvasLeft"></i>
+						</div>
+						<div class="title-bar-left">
+							<ul class="tabs" id="example-tabs" data-tabs>
+								<li class="tabs-title is-active"><a href="#qac-checklist-container" aria-selected="true"><i class="fa fa-tasks"></i> Checklist</a></li>
+								<li class="tabs-title"><a href="#qac-testCases-container"><i class="fa fa-check-square-o"></i>&nbsp; Test Cases</a></li>
+								<li class="tabs-title"><a href="#qac-screens-container"><i class="fa fa-desktop"></i>&nbsp; Screens</a></li>
+								<li class="tabs-title"><a href="#qac-components-container"><i class="fa fa-cubes"></i>&nbsp; Components</a></li>
+								<li class="tabs-title"><a href="#qac-objects-container"><i class="fa fa-object-group"></i>&nbsp; Objects</a></li>
+							</ul>
+						</div>
+						<div class="title-bar-right">
+							<ul class="dropdown menu" data-dropdown-menu>
+								<li class="has-submenu">
+									<a href="#"><i class="fa fa-user"></i> My Account</a>
+									<ul class="submenu menu vertical text-left" style="margin-right: -9em !important; margin-top: .5em" data-submenu>
+										<li><a href="#"><i class="fa fa-gears"></i> Settings</a></li>
+										<li><a href="#"><i class="fa fa-database"></i> Data</a></li>
+										<li><hr style="margin: 0;" class="alt"/></li>
+										<li><a href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</header>
+					<!-- Header End -->
+					
+					<!-- Body Content Start -->
+					<section class="qac-generated-report hide" ng-class="{'hide': mode=='collection'}">
+						<div ng-controller="ReportController">
+							<div class="row">
+								<div class="small-4 columns">
+									<canvas id="myChart"></canvas>
+								</div>
+								<div class="small-8 columns">
+									<div class="row">
+										<div class="small-8 columns">
+											<h1>Checklist Results</h1>
+											<h3>{{results.results.length}} Total Test Cases</h3>
+										</div>
+										<div class="small-4 text-right columns">
+											<label>Date Produced: {{postedDate | date:'yyyy-MM-dd'}}</label>
+											<label>Agent: Sean Murray</label>
+											<label>Result: {{results.failing.length == 0 ? 'Pass' : 'Fail'}}</label>
+										</div>
+									</div>
+								</div>
+							</div>
+				
+							<div class="row">
+								<div class="small-12 columns">
+									<h3>{{results.failing.length}} Failing</h3>
+									<hr/>
+								</div>
+								<div class="small-12 columns">
+									<table width="100%">
+										<thead>
+											<tr>
+												<th width="15%">Group</th>
+												<th width="15%">Screen</th>
+												<th width="15%">Type</th>
+												<th>Test Case</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="failingResult in results.failing">
+												<td>{{failingResult.screen.group}}</td>
+												<td>{{failingResult.screen.label}}</td>
+												<td>{{failingResult.testCase.group}}</td>
+												<td>
+													<label>{{failingResult.testCase.question}}</label>
+													<hr ng-if="failingResult.comments"/>
+													<div ng-if="failingResult.comments">
+														<small><strong>Comments:</strong> {{failingResult.comments}}</small>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+						</div>
+					</section>
+					
+					<section class="qac-main" ng-class="{'hide': mode=='reporting'}">
+						<div class="row ">
+							<div class="small-12 columns">
+								
+								<!-- Tab Content Start -->
+								<div class="tabs-content qac-checklist-tab-content" style="border: 1px solid #e6e6e6;" data-tabs-content="example-tabs">
+									<div class="tabs-panel is-active" id="qac-checklist-container">
+										
+										<div class="qac-top-tab-panel-header row">
+											<div class="small-12 columns">
+												<h5><i class="fa fa-tasks"></i> CHECKLIST</h5>
+											</div>
+										</div>
+
+										<ul class="accordion qac-checklist-groups-list" data-accordion role="tablist" data-multi-expand="true" data-allow-all-closed="true" ng-controller="ScreenListController as screenList">
+											<li class="accordion-item" ng-init="cindex = $index" ng-repeat="group in groups">
+												<a href="#qac-group--{{group.id}}" role="tab" class="accordion-title" id="qac-group--{{group.id}}-heading" aria-controls="qac-group--{{group.id}}">{{cindex+1}}. {{group.label}}</a>
+												<div id="qac-group--{{group.id}}" class="accordion-content qac-checklist-screens-container" role="tabpanel" data-tab-content aria-labelledby="qac-group--{{group.id}}-heading">
+										
+													<ul class="tabs qac-group-screen-tabs-header" data-tabs id="qac-group-screen-tabs--{{group.id}}">
+														<li class="tabs-title {{$first?'is-active':''}}" ng-init="sindex = $index" ng-repeat="screen in group.screens"><a href="#qac-group-screen-tab--{{screen.id}}" aria-selected="true">{{sindex+1}}. {{screen.label}}</a></li>
+													</ul>
+													<div class="tabs-content" data-tabs-content="qac-group-screen-tabs--{{group.id}}">
+														<div class="tabs-panel {{$first?'is-active':''}}" id="qac-group-screen-tab--{{screen.id}}" ng-init="sindex = $index; screen.setupTestCaseGroups();" ng-repeat="screen in group.screens">
+											
+											
+															<div class="row">
+																<div class="small-12 columns">
+																	<div class="qac-screens-listing-heading">
+																		<h5><i class="fa fa-check-square-o"></i> TEST CASES</h5>
+																	</div>
+																</div>
+							
+																<div class="small-12 columns">
+														
+																	<!-- Test Case Groups List Start -->
+																	<ul class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true" role="tablist">
+																		<li class="accordion-item" ng-init="tccindex = $index;" ng-repeat="testCaseGroup in screen.groups">
+																			<a href="#qac-group--{{group.id}}-{{screen.id}}-{{testCaseGroup.id}}" role="tab" class="accordion-title qac-screen-group-header" id="qac-group--{{group.id}}-{{screen.id}}-{{testCaseGroup.id}}-heading" aria-controls="qac-group--{{group.id}}-{{screen.id}}-{{testCaseGroup.id}}">{{tccindex+1}}. {{testCaseGroup.label}}</a>
+																			<div id="qac-group--{{group.id}}-{{screen.id}}-{{testCaseGroup.id}}" class="accordion-content qac-checklist-screen-testcases-container" role="tabpanel" data-tab-content aria-labelledby="qac-group--{{group.id}}-{{screen.id}}-{{testCaseGroup.id}}-heading">
+												
+																				<div class="callout qac-container--base" ng-init="tcindex = $index" ng-repeat="testCase in testCaseGroup.testCases">
+																					<div class="row" ng-controller="TestCaseController">
+																						<div class="small-9 columns">
+																							<div class="row">
+																								<div class="small-1 text-center columns"><span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Full ID: {{cindex+1}}.{{sindex+1}}.{{tccindex+1}}.{{tcindex+1}}">{{tcindex+1}}</span></div>
+																								<div class="small-10 columns">
+																									<label>{{testCase.question}}</label>
+																									<hr ng-class="{'hide': !commenting}" />
+																									<label ng-class="{'hide': !commenting}">
+																										Comments
+																										<textarea placeholder="Steps to reproduce..." ng-model="testCaseResult.comments"></textarea>
+																									</label>
+																								</div>
+																								<div class="small-1 columns" ng-class="{'hide': !testCaseResult.result}"><a ng-click="toggleComments()"><i class="fa fa-comment-o"></i></a></div>
+																							</div>
+																						</div>
+																						<div class="small-3 columns text-center">
+																							<div class="expanded tiny button-group">
+																								<a class="button alert result fail" ng-class="{'hollow': !testCaseResult.result || testCaseResult.result != 'fail'}" ng-click="setResultFail()"><i class="fa fa-times"></i> Fail</a>
+																								<a class="button success result pass" ng-class="{'hollow': !testCaseResult.result || testCaseResult.result != 'pass'}" ng-click="setResultPass()"><i class="fa fa-check"></i> Pass</a>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+
+																				<div class="qac-screen-component-container" ng-init="tcsindex = $index" ng-repeat="testCaseGroupComponent in testCaseGroup.components">
+																					<div class="callout qac-container--base qac-screen-component-header">
+																						<a href="#"><i class="fa fa-angle-right"></i> <span class="qac-screen-component-key button warning"></span> {{testCaseGroupComponent.label}}</a>
+																					</div>
+																					<div class="callout qac-container--base warning" ng-init="tcindex = $index" ng-repeat="testCase in testCaseGroupComponent.testCases">
+																						<div class="row" ng-controller="TestCaseController">
+																							<div class="small-9 columns">
+																								<div class="row">
+																									<div class="small-1 text-center columns"><span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Full ID: {{cindex+1}}.{{sindex+1}}.{{tccindex+1}}.C.{{tcindex+1}}">{{tcindex+1}}</span></div>
+																									<div class="small-10 columns">
+																										<label>{{testCase.question}}</label>
+																										<hr ng-class="{'hide': !commenting}" />
+																										<label ng-class="{'hide': !commenting}">
+																											Comments
+																											<textarea placeholder="Steps to reproduce..." ng-model="testCaseResult.comments"></textarea>
+																										</label>
+																									</div>
+																									<div class="small-1 columns" ng-class="{'hide': !testCaseResult.result}"><a ng-click="toggleComments()"><i class="fa fa-comment-o"></i></a></div>
+																								</div>
+																							</div>
+																							<div class="small-3 columns text-center">
+																								<div class="expanded tiny button-group">
+																									<a class="button alert result fail" ng-class="{'hollow': !testCaseResult.result || testCaseResult.result != 'fail'}" ng-click="setResultFail()"><i class="fa fa-times"></i> Fail</a>
+																									<a class="button success result pass" ng-class="{'hollow': !testCaseResult.result || testCaseResult.result != 'pass'}" ng-click="setResultPass()"><i class="fa fa-check"></i> Pass</a>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</li>
+										
+																		<li class="accordion-item" ng-if="screen.objects">
+																			<a href="#qac-group--{{group.id}}-{{screen.id}}-{{object.id}}" role="tab" class="accordion-title qac-screen-group-header" id="qac-group--{{group.id}}-{{screen.id}}-{{object.id}}-heading" aria-controls="qac-group--{{group.id}}-{{screen.id}}-{{object.id}}">{{tccindex+1}}. Data</a>
+																			<div id="qac-group--{{group.id}}-{{screen.id}}-{{object.id}}" class="accordion-content qac-checklist-screen-testcases-container" role="tabpanel" data-tab-content aria-labelledby="qac-group--{{group.id}}-{{screen.id}}-{{object.id}}-heading">
+																				<div class="qac-object-data-container" ng-init="oindex = $index" ng-repeat="object in screen.objects">
+																					<div class="callout qac-container--base qac-screen-object-data-header">
+																						<a href="#"><i class="fa fa-angle-right"></i> <span class="qac-screen-component-key button primary"></span> {{object.label}}</a>
+																					</div>
+																					<div class="callout qac-container--base primary"  ng-init="opindex = $index" ng-repeat="testCase in object.properties">
+																						<div class="row" ng-controller="TestCaseController">
+																							<div class="small-9 columns">
+																								<div class="row">
+																									<div class="small-1 text-center columns"><span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Full ID: {{cindex+1}}.{{sindex+1}}.{{tccindex+1}}.OP.{{oindex+1}}">{{opindex+1}}</span></div>
+																									<div class="small-10 columns">
+																										<label>{{testCase.label}}</label>
+																										<hr ng-class="{'hide': !commenting}" />
+																										<label ng-class="{'hide': !commenting}">
+																											Comments
+																											<textarea placeholder="Steps to reproduce..." ng-model="testCaseResult.comments"></textarea>
+																										</label>
+																									</div>
+																									<div class="small-1 columns" ng-class="{'hide': !testCaseResult.result}"><a ng-click="toggleComments()"><i class="fa fa-comment-o"></i></a></div>
+																								</div>
+																							</div>
+																							<div class="small-3 columns text-center">
+																								<div class="expanded tiny button-group">
+																									<a class="button alert result fail" ng-class="{'hollow': !testCaseResult.result || testCaseResult.result != 'fail'}" ng-click="setResultFail()"><i class="fa fa-times"></i> Fail</a>
+																									<a class="button success result pass" ng-class="{'hollow': !testCaseResult.result || testCaseResult.result != 'pass'}" ng-click="setResultPass()"><i class="fa fa-check"></i> Pass</a>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</li>
+																	</ul>
+																	<!-- Test Case Groups List End -->
+																</div>
+															</div>
+														</div>
+														<!-- Primary Tab Panel Close -->
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+									
+									
+									<div class="tabs-panel" id="qac-testCases-container" ng-controller="TestCasesTabContainerController">
+										<div class="qac-top-tab-panel-header row">
+											<div class="small-8 columns">
+												<h5><i class="fa fa-check-square-o"></i> TEST CASES</h5>
+											</div>
+											<div class="small-4 columns text-right">
+												<button class="button tiny hollow" data-open="qac-testCase-modal" ng-click="setTestCaseToEdit()"><i class="fa fa-plus"></i> Add Test Case</button>
+											</div>
+										</div>
+										<div class="row">
+											<div class="small-12 columns">
+												<table id="qac-testCases-list" datatable="ng">
+													<thead>
+														<tr>
+															<th>Test Case</th>
+															<th>Group</th>
+															<th>Components</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="testCase in testCasesList">
+															<td class="qac-testCase-list-label-cell-{{testCase.id}}" ng-click="setTestCaseToEdit(testCase)">
+																<a href="javascript:void(0);" data-open="qac-testCase-modal">{{testCase.question}}</a>
+															</td>
+															<td class="qac-testCase-list-group-cell-{{testCase.id}}">
+																{{testCase.group}}
+															</td>
+															<td class="qac-testCase-list-group-cell-{{testCase.id}}">
+																{{testCase.components}}
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+						
+						
+					
+									<div class="tabs-panel" id="qac-screens-container" ng-controller="ScreensTabContainerController">
+										<div class="qac-top-tab-panel-header row">
+											<div class="small-8 columns">
+												<h5><i class="fa fa-desktop"></i> SCREENS</h5>
+											</div>
+											<div class="small-4 columns text-right">
+												<button class="button tiny hollow" data-open="qac-screen-modal" ng-click="setScreenToEdit()"><i class="fa fa-plus"></i> Add Screen</button>
+											</div>
+										</div>
+										<div class="row">
+											<div class="small-12 columns">
+												<table id="qac-screens-list" datatable="ng">
+													<thead>
+														<tr>
+															<th>Screen</th>
+															<th>Group</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="screen in screensList">
+															<td class="qac-screen-list-label-cell-{{screen.id}}" ng-click="setScreenToEdit(screen)">
+																<a href="javascript:void(0);" data-open="qac-screen-modal">{{screen.label}}</a>
+															</td>
+															<td class="qac-screen-list-group-cell-{{screen.id}}">
+																{{screenGroups[ screen.group ].label}}
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+						
+						
+						
+									<div class="tabs-panel" ng-controller="ComponentsTabContainerController" id="qac-components-container">
+										<div class="qac-top-tab-panel-header row">
+											<div class="small-8 columns">
+												<h5><i class="fa fa-cubes"></i> COMPONENTS</h5>
+											</div>
+											<div class="small-4 columns text-right">
+												<button class="button tiny hollow" data-open="qac-component-modal" ng-click="setComponentToEdit()"><i class="fa fa-plus"></i> Add Component</button>
+											</div>
+										</div>
+										<div class="row">
+											<div class="small-12 columns">
+												<table id="qac-components-list" datatable="ng">
+													<thead>
+														<tr>
+															<th>Component</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="component in componentsList">
+															<td class="qac-component-list-group-cell-{{screen.id}}" ng-click="setComponentToEdit(component)">
+																<a href="javascript:void(0);" data-open="qac-component-modal">{{component.label}}</a>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+						
+						
+						
+									<div class="tabs-panel" id="qac-objects-container" ng-controller="qaObjectsTabContainerController">
+										<div class="qac-top-tab-panel-header row">
+											<div class="small-8 columns">
+												<h5><i class="fa fa-object-group"></i> OBJECTS</h5>
+											</div>
+											<div class="small-4 columns text-right">
+												<button class="button tiny hollow" data-open="qac-qaobject-modal" ng-click="setQAObjectToEdit()"><i class="fa fa-plus"></i> Add Object</button>
+											</div>
+										</div>
+										<div class="row">
+											<div class="small-12 columns">
+												<table id="qac-qaobjects-list" datatable="ng">
+													<thead>
+														<tr>
+															<th>Object</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat="qaobject in qaobjectsList">
+															<td class="qac-qaobject-list-group-cell-{{screen.id}}" ng-click="setQAObjectToEdit(qaobject)">
+																<a href="javascript:void(0);" data-open="qac-qaobject-modal">{{qaobject.label}}</a>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+						
+						
+								</div>
+								<!-- Tab Content Start -->
+							</div>
+						</div>
+					</section>
+					<!-- Body Content End -->
+					
+					<br/><br/>				
+					<footer class="title-bar no-print" style="position: absolute; bottom: 0px; width: 100%;">
+						<div class="row">
+							<div class="small-8 columns">
+								<small><i class="fa fa-check-square-o"></i> QA Checklist</small>
+							</div>
+							<div class="small-4 columns text-right">
+								<div class="row">
+									<div class="small-6 columns text-center">
+										<button ng-if="mode=='reporting'" type="button" class="button tiny expanded qac-header-control-button" ng-click="startCollection()"><i class="fa fa-check-square-o"></i> Checklist</button>
+									</div>
+									<div class="small-6 columns text-center">
+										<button ng-if="mode=='collection'" type="button" class="button tiny expanded qac-header-control-button" ng-click="generateReport()"><i class="fa fa-bar-chart"></i> Generate</button>
+										<button ng-if="mode=='reporting'" type="button" class="button tiny expanded qac-header-control-button" ng-click="publishReport()"><i class="fa fa-cloud-upload"></i> Publish</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</footer>
+				</div>
+				<!-- Off Canvas Content End -->
+			</div>
+		</div>
+		
+
+
+		<!-- QA Object Property Management Modal -->
+		<div id="qac-qaobjectProperty-modal" ng-controller="QAObjectPropertyEditController" class="reveal large" role="dialog" data-reveal>
+			<h1>Object Property Management</h1>
+			<form data-abide novalidate>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>ID
+							<input type="text" disabled ng-model="qaobjectProperty.selectedID" placeholder="background-color" required />
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Name
+							<input type="text" ng-model="qaobjectProperty.selected.key" placeholder="backgroundColor" required />
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Display Label
+							<input type="text" ng-model="qaobjectProperty.selected.label" placeholder="Background Color" required />
+						</label>
+					</div>
+				</div>
+				
+				
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Type
+							<select ng-model="screen.selectedType" required ng-options="type as type.label for type in allTypes track by type.id" ng-change="updateObjectPropertyType()" required /></select>
+						</label>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Input Placeholder
+							<input type="text" ng-model="qaobjectProperty.selected.placeholder" placeholder="Enter a color code here" />
+						</label>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Group
+							<input type="text" ng-model="qaobjectProperty.selected.group" placeholder="" />
+						</label>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="small-6 columns">
+						<label>Displayed
+							<div class="switch">
+								<input class="switch-input" ng-model="qaobjectProperty.selected.displayed" id="qac-objectProperty-displayed--checkbox" type="checkbox">
+								<label class="switch-paddle" for="qac-objectProperty-displayed--checkbox">
+									<span class="show-for-sr">Displayed</span>
+								</label>
+							</div>
+						</label>
+					</div>
+					
+					<div class="small-6 columns">
+						<label>Editable
+							<div class="switch">
+								<input class="switch-input" ng-model="qaobjectProperty.selected.editable" id="qac-objectProperty-editable--checkbox" type="checkbox">
+								<label class="switch-paddle" for="qac-objectProperty-editable--checkbox">
+									<span class="show-for-sr">Editable</span>
+								</label>
+							</div>
+						</label>
+					</div>
+				</div>
+				
+			</form>
+			
+			<div class="row">
+				<div class="small-12 columns">
+					<hr/>
+				</div>
+				<div class="small-12 columns text-right">
+					<button class="button" ng-click="updateQAObjectPropertyFromEdits()" data-toggle="qac-qaobject-modal"><i class="fa fa-check"></i> Done</button>
+				</div>
+			</div>
+
+			<button class="close-button" data-close aria-label="Close reveal" data-toggle="qac-qaobject-modal" type="button">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		
+		<!-- QA Object Management Modal -->
+		<div id="qac-qaobject-modal" ng-controller="QAObjectEditController" class="reveal large" role="dialog" data-reveal>
+			<h1>Object Management</h1>
+			<form data-abide novalidate>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>ID
+							<input type="text" disabled ng-model="qaobject.selectedID" placeholder="navigation-bar" required />
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Name
+							<input type="text" ng-model="qaobject.selected.label" placeholder="" required />
+						</label>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="small-12 columns">
+						<div class="callout secondary">
+							
+							<div class="row">
+								<div class="small-6 columns">
+									<h4>Properties</h4>
+								</div>
+								
+								<div class="small-6 columns text-right">
+									<button class="button" ng-click="setQAObjectPropertyToEdit()" style="margin-bottom: 0;" data-toggle="qac-qaobjectProperty-modal"><i class="fa fa-plus"></i> Add Property</button>
+								</div>
+							</div>
+							<hr/>
+							
+							<table id="qac-qaobject-edit-properties-list">
+								<thead>
+									<tr>
+										<th>Property</th>
+										<th>Placeholder</th>
+										<th>Required</th>
+										<th>Displayed</th>
+										<th>Editable</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="qaobjectProperty in qaobject.selected.properties">
+										<td>
+											<a href="#" data-open="qac-qaobjectProperty-modal" ng-click="setQAObjectPropertyToEdit(qaobjectProperty)">{{qaobjectProperty.label}}</a>
+										</td>
+										<td>
+											{{qaobjectProperty.type}}
+										</td>
+										<td>
+											{{!!qaobjectProperty.required}}
+										</td>
+										<td>
+											{{!!qaobjectProperty.displayed}}
+										</td>
+										<td>
+											{{!!qaobjectProperty.editable}}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<div class="row">
+				<div class="small-12 columns">
+					<hr/>
+				</div>
+				<div class="small-12 columns text-right">
+					<button class="button" ng-click="updateQAObjectFromEdits()" data-toggle="qac-qaobject-modal"><i class="fa fa-check"></i> Done</button>
+				</div>
+			</div>
+
+			<button class="close-button" data-close aria-label="Close reveal" type="button">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
+		<!-- Component Management Modal -->
+		<div id="qac-component-modal" ng-controller="ComponentEditController" class="reveal large" role="dialog" data-reveal>
+			<h1>Component Management</h1>
+			<form data-abide novalidate>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>ID
+							<input type="text" disabled ng-model="component.selectedID" placeholder="navigation-bar" required />
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Name
+							<input type="text" ng-model="component.selected.label" placeholder="Navigation Bar" required />
+						</label>
+					</div>
+				</div>
+			</form>
+			
+			<div class="row">
+				<div class="small-12 columns">
+					<hr/>
+				</div>
+				<div class="small-12 columns text-right">
+					<button class="button" ng-click="updateComponentFromEdits()" data-toggle="qac-component-modal"><i class="fa fa-check"></i> Done</button>
+				</div>
+			</div>
+
+			<button class="close-button" data-close aria-label="Close reveal" type="button">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		
+		<!-- TestCase Management Modal -->
+		<div id="qac-testCase-modal" ng-controller="TestCaseEditController" class="reveal large" role="dialog" data-reveal>
+			<h1>Test Case Management</h1>
+			<form data-abide novalidate>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>ID
+							<input type="text" disabled ng-model="testCase.selectedID" placeholder="navigation-bar" required />
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Name
+							<input type="text" ng-model="testCase.selected.label" placeholder="Field Check" required />
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Question
+							<input type="text" ng-model="testCase.selected.question" placeholder="Field Check" required />
+						</label>
+					</div>
+				</div>
+			</form>
+			
+			<div class="row">
+				<div class="small-12 columns">
+					<hr/>
+				</div>
+				<div class="small-12 columns text-right">
+					<button class="button" ng-click="updateTestCaseFromEdits()" data-toggle="qac-testCase-modal"><i class="fa fa-check"></i> Done</button>
+				</div>
+			</div>
+
+			<button class="close-button" data-close aria-label="Close reveal" type="button">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		
+		
+		<!-- Screen Management Modal -->
+		<div id="qac-screen-modal" ng-controller="ScreenEditController" class="reveal large" role="dialog" data-reveal>
+			<h1>Screen Management</h1>
+			<form data-abide novalidate>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>ID
+							<input type="text" disabled ng-model="screen.selectedID" placeholder="entry-page" required />
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Name
+							<input type="text" ng-model="screen.selected.label" placeholder="Entry Page" required />
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Group
+							<select id="qac-screen-management-group" style="width: 100%;" required /></select>
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="small-12 columns">
+						<label>Level
+							<input type="number" ng-model="screen.selected.level" placeholder="0" required />
+						</label>
+					</div>
+				</div>
+			</form>
+			
+			<div class="row">
+				<div class="small-12 columns">
+					<hr/>
+				</div>
+				<div class="small-12 columns text-right">
+					<button class="button" ng-click="updateScreenFromEdits()" data-toggle="qac-screen-modal"><i class="fa fa-check"></i> Done</button>
+				</div>
+			</div>
+
+			<button class="close-button" data-close aria-label="Close reveal" type="button">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
+
+
+		<!-- Publish Management Modal -->
+		<div id="qac-publish-modal" ng-controller="PublishController" class="reveal large" role="dialog" data-reveal>
+			<h1>Publish Management</h1>
+			<p class="lead">Please choose a source to publish too</p>
+			
+			<hr/>
+			
+			<ul class="accordion" data-accordion role="tablist">
+				<li class="accordion-item">
+					<a href="#qac-publish-modal-trello-options" ng-click="initializeDrillDown()" role="tab" class="accordion-title" id="qac-publish-modal-trello-options-heading" aria-controls="qac-publish-modal-trello-options"><i class="fa fa-trello"></i> Trello</a>
+					<div id="qac-publish-modal-trello-options" class="accordion-content" role="tabpanel" data-tab-content aria-labelledby="qac-publish-modal-trello-options-heading">
+						<div class="row">
+							<div class="small-12 columns">
+								<p>To publish to Trello, you must select a board and a list to publish too. 
+									Once selected, a new card with a checklist inside will be created.</p>
+							</div>
+							<div class="small-12 columns">
+								<ul class="vertical menu" id="qac-board-listing">
+									<li ng-repeat="board in boards">
+										<a href="#"><i class="fa fa-columns"></i>&nbsp; {{board.name}}</a>
+										<ul class="nested vertical menu">
+											<li ng-repeat="list in board.lists"><a href="#" ng-click="selectList(list)"><i class="fa fa-list-alt"></i>&nbsp; {{list.name}}</a></li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			
+			<div class="row">
+				<div class="small-12 columns">
+					<hr/>
+				</div>
+				<div class="small-12 columns text-right">
+					<button class="button" ng-click="updateScreenFromEdits()" data-toggle="qac-screen-modal"><i class="fa fa-check"></i> Done</button>
+				</div>
+			</div>
+
+			<button class="close-button" data-close aria-label="Close reveal" type="button">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div id="qac-publish-success-modal" class="reveal large text-center" role="dialog" data-reveal>
+			<h1><i class="fa fa-trello"></i> Publish Success</h1>
+			<hr/>
+			
+			<div class="row">
+				<div class="small-12 columns text-center">
+					<i class="fa fa-check" style="color:green;font-weight:900;font-size:8em"></i>
+				</div>
+				<div class="small-12 columns text-center">
+					<h3>New Card Created In Trello!</h3>
+				</div>
+			</div>
+
+			<hr/>
+			
+			<div class="row">
+				<div class="small-12 columns text-right">
+					<button class="button" data-toggle="qac-publish-success-modal"><i class="fa fa-check"></i> Done</button>
+				</div>
+			</div>
+			
+			<button class="close-button" data-close aria-label="Close reveal" type="button">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.1.1/foundation.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/plug-ins/1.10.7/integration/foundation/dataTables.foundation.js"></script>
+		<script src="angular-datatables.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+		
+		<script src="https://trello.com/1/client.js?key=6e3e7df6e1e79a428e759330048443b0"></script>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+		
+		<script>
+			$(function(){
+			
+				$(document).foundation();
+				// $("table").DataTable();
+				
+				$("#offCanvasLeft,.off-canvas-content").height( $(window).height() );
+			});
+		</script>
+	</body>
+</html>

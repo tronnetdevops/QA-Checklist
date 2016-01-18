@@ -1,0 +1,24 @@
+{
+  "name": "qa-checklist",
+  "version": "1.0.0",
+  "description": "QA Checklists built for streamlines manual QA testing and beautiful reporting",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tronnetdevops/QA-Checklist.git"
+  },
+  "keywords": [
+    "QA",
+    "QC",
+    "Checklist"
+  ],
+  "author": "TronNet DevOps",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tronnetdevops/QA-Checklist/issues"
+  },
+  "homepage": "https://github.com/tronnetdevops/QA-Checklist#readme"
+}
